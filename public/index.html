@@ -7,638 +7,993 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0a0a0f;
-  --surface: #12121a;
-  --surface2: #1a1a28;
-  --border: #2a2a40;
-  --accent: #00e5ff;
-  --accent2: #ff3c6e;
-  --accent3: #aaff00;
-  --p1: #00e5ff;
-  --p2: #ff9d00;
-  --ai-color: #ff3c6e;
-  --text: #e8e8f0;
-  --text-dim: #6060a0;
-  --grid-line: #2e2e48;
-  --grid-bold: #5050a0;
-  --fixed-bg: #1a1a35;
-  --fixed-text: #ffffff;
+  --bg:#0a0a0f; --surface:#12121a; --surface2:#1a1a28; --border:#2a2a40;
+  --accent:#00e5ff; --accent2:#ff3c6e; --accent3:#aaff00;
+  --p1:#00e5ff; --p2:#ff9d00; --ai:#ff3c6e;
+  --text:#e8e8f0; --dim:#6060a0;
+  --gl:#2e2e48; --gb:#5050a0; --fb:#1a1a35;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: var(--bg); color: var(--text);
-  font-family: 'Noto Sans KR', sans-serif;
-  min-height: 100vh; overflow-x: hidden;
-}
-body::before {
-  content: ''; position: fixed; inset: 0;
-  background-image: linear-gradient(rgba(0,229,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.025) 1px, transparent 1px);
-  background-size: 44px 44px; pointer-events: none; z-index: 0;
-}
-.container { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 12px 14px; }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.022) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:12px 14px;}
 
 /* HEADER */
-header { text-align: center; padding: 14px 0 10px; }
-.logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(2rem, 7vw, 4rem); letter-spacing: 0.12em; line-height: 1;
-  background: linear-gradient(130deg, var(--accent) 20%, var(--accent2) 80%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-.logo-sub { font-family: 'Space Mono', monospace; font-size: 0.58rem; letter-spacing: 0.4em; color: var(--text-dim); text-transform: uppercase; margin-top: 3px; }
+header{text-align:center;padding:12px 0 8px;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,7vw,3.8rem);letter-spacing:.12em;line-height:1;background:linear-gradient(130deg,var(--accent) 20%,var(--accent2) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.logo-sub{font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.4em;color:var(--dim);text-transform:uppercase;margin-top:3px;}
 
 /* SCREENS */
-.screen { display: none; }
-.screen.active { display: block; }
+.screen{display:none;} .screen.active{display:block;}
 
-/* START SCREEN */
-.start-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 26px 18px; text-align: center; margin-top: 10px; }
-.start-card h2 { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 18px; }
-.mode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 9px; margin-bottom: 22px; }
-.mode-btn { background: var(--surface2); border: 2px solid var(--border); border-radius: 10px; padding: 16px 12px; cursor: pointer; transition: all 0.18s; text-align: left; }
-.mode-btn:hover { border-color: var(--accent); transform: translateY(-2px); }
-.mode-btn.selected { border-color: var(--accent); background: rgba(0,229,255,0.07); }
-.mode-btn .mode-icon { font-size: 1.6rem; margin-bottom: 6px; }
-.mode-btn .mode-title { font-weight: 700; font-size: 0.88rem; color: var(--text); }
-.mode-btn .mode-desc { font-size: 0.68rem; color: var(--text-dim); margin-top: 3px; line-height: 1.4; }
-.mode-btn.pvp { border-color: rgba(255,157,0,0.35); }
-.mode-btn.pvp:hover, .mode-btn.pvp.selected { border-color: var(--p2); background: rgba(255,157,0,0.07); }
-.mode-btn.pvp .mode-title { color: var(--p2); }
-.pvp-badge { display: inline-block; background: var(--p2); color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 0.58rem; letter-spacing: 0.1em; padding: 1px 5px; border-radius: 3px; margin-left: 5px; vertical-align: middle; }
-.diff-label { font-size: 0.7rem; color: var(--text-dim); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
-.diff-btns { display: flex; gap: 7px; justify-content: center; margin-bottom: 22px; }
-.diff-btn { background: var(--surface2); border: 2px solid var(--border); border-radius: 6px; padding: 7px 16px; cursor: pointer; font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--text-dim); transition: all 0.18s; letter-spacing: 0.1em; }
-.diff-btn:hover { border-color: var(--accent3); color: var(--accent3); }
-.diff-btn.selected { border-color: var(--accent3); color: var(--accent3); background: rgba(170,255,0,0.07); }
-.start-btn { background: linear-gradient(135deg, var(--accent), #009bbf); border: none; border-radius: 8px; padding: 12px 42px; font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.15em; color: var(--bg); cursor: pointer; transition: all 0.2s; }
-.start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,229,255,0.28); }
+/* ── LOBBY ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 16px;margin-top:10px;}
+.section-lbl{font-size:.68rem;font-weight:700;color:var(--dim);letter-spacing:.22em;text-transform:uppercase;margin-bottom:12px;text-align:center;}
 
-/* STATUS BAR */
-.status-bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin-bottom: 10px; }
-.player-info { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 11px; }
-.player-info.p1 { border-left: 3px solid var(--p1); }
-.player-info.p2 { border-right: 3px solid var(--p2); text-align: right; }
-.player-name { font-family: 'Space Mono', monospace; font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 2px; }
-.player-info.p1 .player-name { color: var(--p1); }
-.player-info.p2 .player-name { color: var(--p2); }
-.player-score { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.05em; line-height: 1; }
-.player-info.p1 .player-score { color: var(--p1); }
-.player-info.p2 .player-score { color: var(--p2); }
-.player-progress { font-size: 0.62rem; color: var(--text-dim); margin-top: 2px; }
-.timer-block { text-align: center; }
-.timer-display { font-family: 'Space Mono', monospace; font-size: 1.4rem; color: var(--accent3); letter-spacing: 0.04em; }
-.timer-label { font-size: 0.54rem; color: var(--text-dim); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 2px; }
-.ai-thinking { display: none; align-items: center; gap: 5px; justify-content: center; font-family: 'Space Mono', monospace; font-size: 0.58rem; color: var(--ai-color); letter-spacing: 0.1em; }
-.ai-thinking.show { display: flex; }
-.dot-pulse span { display: inline-block; width: 4px; height: 4px; background: var(--ai-color); border-radius: 50%; animation: dpulse 1.2s infinite; margin: 0 1px; }
-.dot-pulse span:nth-child(2) { animation-delay: 0.2s; }
-.dot-pulse span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes dpulse { 0%,80%,100%{transform:scale(0.6);opacity:0.4;} 40%{transform:scale(1);opacity:1;} }
+/* Online buttons */
+.online-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+.ob{background:var(--surface2);border:2px solid var(--border);border-radius:12px;padding:18px 12px;cursor:pointer;transition:all .18s;text-align:center;}
+.ob:hover{transform:translateY(-2px);}
+.ob.create:hover,.ob.create.sel{border-color:var(--accent);background:rgba(0,229,255,.07);}
+.ob.join:hover,.ob.join.sel{border-color:var(--p2);background:rgba(255,157,0,.07);}
+.ob-icon{font-size:2rem;margin-bottom:7px;}
+.ob-title{font-weight:700;font-size:.9rem;color:var(--text);}
+.ob-desc{font-size:.66rem;color:var(--dim);margin-top:3px;}
+.ob.create .ob-title{color:var(--accent);}
+.ob.join .ob-title{color:var(--p2);}
 
-/* PVP info bar */
-.pvp-info-bar { display: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; text-align: center; margin-bottom: 9px; font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.08em; color: var(--text-dim); }
-.pvp-info-bar.show { display: block; }
-.pvp-info-bar .pi1 { color: var(--p1); }
-.pvp-info-bar .pi2 { color: var(--p2); }
+.divider{text-align:center;color:var(--dim);font-size:.62rem;letter-spacing:.15em;margin:4px 0 16px;position:relative;}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:calc(50% - 70px);height:1px;background:var(--border);}
+.divider::before{left:0;} .divider::after{right:0;}
 
-/* BATTLE AREA */
-.battle-area { display: grid; grid-template-columns: 1fr; gap: 12px; }
-@media (min-width: 600px) { .battle-area.two-boards { grid-template-columns: 1fr 1fr; } }
+/* Mode grid */
+.mode-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:18px;}
+.mode-btn{background:var(--surface2);border:2px solid var(--border);border-radius:10px;padding:14px 10px;cursor:pointer;transition:all .18s;text-align:center;}
+.mode-btn:hover{border-color:var(--accent);transform:translateY(-2px);}
+.mode-btn.selected{border-color:var(--accent);background:rgba(0,229,255,.07);}
+.mode-btn.pvp{border-color:rgba(255,157,0,.35);}
+.mode-btn.pvp:hover,.mode-btn.pvp.selected{border-color:var(--p2);background:rgba(255,157,0,.07);}
+.mode-btn.pvp .mt{color:var(--p2);}
+.mi{font-size:1.5rem;margin-bottom:5px;}
+.mt{font-weight:700;font-size:.82rem;color:var(--text);}
+.md{font-size:.62rem;color:var(--dim);margin-top:2px;}
 
-.board-wrapper { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 11px; }
-.board-title { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.24em; text-transform: uppercase; margin-bottom: 8px; padding-bottom: 7px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-.board-wrapper.p1board .board-title { color: var(--p1); }
-.board-wrapper.p2board .board-title { color: var(--p2); }
-.board-wrapper.aiboard .board-title { color: var(--ai-color); }
+.diff-lbl{font-size:.68rem;color:var(--dim);letter-spacing:.15em;text-transform:uppercase;margin-bottom:7px;text-align:center;}
+.diff-row{display:flex;gap:7px;justify-content:center;margin-bottom:18px;}
+.diff-btn{background:var(--surface2);border:2px solid var(--border);border-radius:6px;padding:6px 15px;cursor:pointer;font-family:'Space Mono',monospace;font-size:.68rem;color:var(--dim);transition:all .18s;letter-spacing:.1em;}
+.diff-btn:hover{border-color:var(--accent3);color:var(--accent3);}
+.diff-btn.selected{border-color:var(--accent3);color:var(--accent3);background:rgba(170,255,0,.07);}
+.start-btn{display:block;width:100%;background:linear-gradient(135deg,var(--accent),#009bbf);border:none;border-radius:8px;padding:12px;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.15em;color:var(--bg);cursor:pointer;transition:all .2s;}
+.start-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,229,255,.28);}
 
-/* GRID */
-.sudoku-grid { display: grid; grid-template-columns: repeat(9,1fr); border: 2px solid var(--grid-bold); border-radius: 3px; overflow: hidden; width: 100%; aspect-ratio: 1; }
-.cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; background: var(--bg); border: 1px solid var(--grid-line); font-family: 'Space Mono', monospace; font-size: clamp(0.85rem, 3vw, 1.4rem); font-weight: 700; cursor: pointer; transition: background 0.12s; color: #ffffff; user-select: none; -webkit-tap-highlight-color: transparent; }
-.cell:nth-child(3n) { border-right: 2px solid var(--grid-bold); }
-.cell:nth-child(9n) { border-right: 1px solid var(--grid-line); }
-.cell[data-row="2"], .cell[data-row="5"] { border-bottom: 2px solid var(--grid-bold); }
-.cell.fixed { background: var(--fixed-bg); color: #ffffff; cursor: default; font-weight: 900; text-shadow: 0 0 8px rgba(180,180,255,0.5); }
-.cell.sel1 { background: rgba(0,229,255,0.16) !important; }
-.cell.sel2 { background: rgba(255,157,0,0.18) !important; }
-.cell.hl1 { background: rgba(0,229,255,0.05); }
-.cell.hl2 { background: rgba(255,157,0,0.05); }
-.cell.err { color: var(--accent2) !important; }
-.cell.cf { animation: cflash 0.35s ease; }
-@keyframes cflash { 0%{background:rgba(170,255,0,0.38);} 100%{background:transparent;} }
-.cell.p2fill { color: var(--p2); text-shadow: 0 0 6px rgba(255,157,0,0.5); }
-.cell.aifill { color: #ff6e96; text-shadow: 0 0 6px rgba(255,60,110,0.5); }
-.cell.err { color: #ff4477 !important; text-shadow: 0 0 8px rgba(255,60,110,0.6) !important; }
+/* ── MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(10,10,15,.88);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(5px);}
+.modal-bg.show{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px 22px;max-width:340px;width:92%;}
+.modal h3{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.1em;margin-bottom:16px;}
+.modal h3.c1{color:var(--accent);} .modal h3.c2{color:var(--p2);}
+.flbl{font-size:.62rem;color:var(--dim);letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px;}
+.finput{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:9px 11px;color:var(--text);font-family:'Space Mono',monospace;font-size:.85rem;outline:none;transition:border-color .14s;margin-bottom:12px;}
+.finput:focus{border-color:var(--accent);}
+.finput.c2f:focus{border-color:var(--p2);}
+.finput.code{font-size:1.3rem;text-transform:uppercase;letter-spacing:.22em;text-align:center;}
+.mmode-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.mmbtn{background:var(--surface2);border:2px solid var(--border);border-radius:8px;padding:11px 8px;cursor:pointer;transition:all .15s;text-align:center;}
+.mmbtn:hover{border-color:var(--accent);} .mmbtn.sel{border-color:var(--accent);background:rgba(0,229,255,.07);}
+.mmbtn .mmi{font-size:1.3rem;margin-bottom:3px;} .mmbtn .mmt{font-size:.73rem;font-weight:700;color:var(--text);}
+.mdiff-row{display:flex;gap:6px;margin-bottom:14px;}
+.mdbtn{flex:1;background:var(--surface2);border:2px solid var(--border);border-radius:5px;padding:6px;cursor:pointer;font-family:'Space Mono',monospace;font-size:.6rem;color:var(--dim);transition:all .14s;text-align:center;letter-spacing:.08em;}
+.mdbtn:hover{border-color:var(--accent3);color:var(--accent3);} .mdbtn.sel{border-color:var(--accent3);color:var(--accent3);background:rgba(170,255,0,.07);}
+.server-note{font-size:.6rem;color:var(--dim);background:var(--surface2);border-radius:6px;padding:8px 10px;margin-bottom:12px;line-height:1.5;}
+.server-note a{color:var(--accent);text-decoration:none;}
+.modal-btns{display:flex;gap:8px;}
+.mbtn{flex:1;border:none;border-radius:7px;padding:10px;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.1em;cursor:pointer;transition:all .18s;}
+.mbtn.p1{background:var(--accent);color:var(--bg);}
+.mbtn.p2{background:var(--p2);color:var(--bg);}
+.mbtn.cancel{background:var(--surface2);color:var(--dim);border:1px solid var(--border);}
+.mbtn:hover{transform:translateY(-1px);}
 
-/* NUMPAD */
-.numpad { display: grid; grid-template-columns: repeat(9,1fr); gap: 3px; margin-top: 8px; }
-.nbtn { aspect-ratio: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; color: #ffffff; font-family: 'Space Mono', monospace; font-size: clamp(0.75rem, 2.2vw, 1.1rem); font-weight: 700; cursor: pointer; transition: all 0.12s; display: flex; align-items: center; justify-content: center; }
-.nbtn:hover { background: rgba(0,229,255,0.1); border-color: var(--accent); }
-.nbtn:active { transform: scale(0.88); }
-.nbtn.p2s:hover { background: rgba(255,157,0,0.1); border-color: var(--p2); }
-.tool-row { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-top: 3px; }
-.tbtn { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 5px 4px; cursor: pointer; font-family: 'Space Mono', monospace; font-size: 0.58rem; letter-spacing: 0.04em; color: var(--text-dim); transition: all 0.12s; text-align: center; }
-.tbtn:hover { border-color: var(--accent2); color: var(--accent2); }
+/* ── WAITING ROOM ── */
+.room-code-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,10vw,4.5rem);letter-spacing:.25em;color:var(--accent3);margin:8px 0;}
+.copy-btn{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:7px 14px;font-family:'Space Mono',monospace;font-size:.62rem;color:var(--accent);cursor:pointer;transition:all .14s;}
+.copy-btn:hover{background:rgba(0,229,255,.1);}
+.copy-btn.done{color:var(--accent3);border-color:var(--accent3);}
+.wait-slots{display:flex;gap:12px;justify-content:center;margin:18px 0;flex-wrap:wrap;}
+.wslot{background:var(--surface2);border:2px solid var(--border);border-radius:10px;padding:14px 18px;min-width:120px;text-align:center;transition:all .3s;}
+.wslot.p1s.filled{border-color:var(--p1);}
+.wslot.p2s.filled{border-color:var(--p2);}
+.ws-icon{font-size:1.7rem;margin-bottom:5px;}
+.ws-name{font-weight:700;font-size:.85rem;}
+.wslot.p1s .ws-name{color:var(--p1);}
+.wslot.p2s .ws-name{color:var(--p2);}
+.ws-role{font-size:.6rem;color:var(--dim);margin-top:2px;}
+.waiting-pulse{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;color:var(--dim);letter-spacing:.14em;}
+.pulse-dot{width:7px;height:7px;background:var(--accent);border-radius:50%;animation:pdot 1.5s infinite;}
+@keyframes pdot{0%,100%{opacity:.2;transform:scale(.7);}50%{opacity:1;transform:scale(1);}}
 
-/* PROGRESS */
-.pw { margin-top: 7px; background: var(--border); border-radius: 2px; height: 3px; overflow: hidden; }
-.pf { height: 100%; border-radius: 2px; transition: width 0.35s ease; }
-.p1board .pf { background: var(--p1); }
-.p2board .pf, .pvpboard2 .pf { background: var(--p2); }
-.aiboard .pf { background: var(--ai-color); }
+/* ── STATUS BAR ── */
+.status-bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;margin-bottom:10px;}
+.pinfo{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 11px;}
+.pinfo.p1{border-left:3px solid var(--p1);}
+.pinfo.p2{border-right:3px solid var(--p2);text-align:right;}
+.pname{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:2px;}
+.pinfo.p1 .pname{color:var(--p1);} .pinfo.p2 .pname{color:var(--p2);}
+.pscore{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;line-height:1;}
+.pinfo.p1 .pscore{color:var(--p1);} .pinfo.p2 .pscore{color:var(--p2);}
+.pprog{font-size:.6rem;color:var(--dim);margin-top:2px;}
+.tblk{text-align:center;}
+.tdisp{font-family:'Space Mono',monospace;font-size:1.4rem;color:var(--accent3);}
+.tlbl{font-size:.54rem;color:var(--dim);letter-spacing:.2em;text-transform:uppercase;margin-top:2px;}
+.ai-think{display:none;align-items:center;gap:5px;justify-content:center;font-family:'Space Mono',monospace;font-size:.56rem;color:var(--ai);letter-spacing:.1em;}
+.ai-think.show{display:flex;}
+.dot-pulse span{display:inline-block;width:4px;height:4px;background:var(--ai);border-radius:50%;animation:dp 1.2s infinite;margin:0 1px;}
+.dot-pulse span:nth-child(2){animation-delay:.2s;} .dot-pulse span:nth-child(3){animation-delay:.4s;}
+@keyframes dp{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
 
-/* CONTROLS */
-.controls { display: flex; gap: 7px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
-.cbtn { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 6px 13px; font-family: 'Space Mono', monospace; font-size: 0.64rem; letter-spacing: 0.1em; color: var(--text-dim); cursor: pointer; transition: all 0.14s; text-transform: uppercase; }
-.cbtn:hover { border-color: var(--accent); color: var(--accent); }
-.cbtn.hint { border-color: rgba(170,255,0,0.3); color: var(--accent3); }
-.cbtn.hint2 { border-color: rgba(255,157,0,0.3); color: var(--p2); }
-.cbtn.quit { border-color: rgba(255,60,110,0.3); color: var(--accent2); }
-.hcnt { font-family: 'Bebas Neue', sans-serif; font-size: 0.82rem; margin-left: 2px; }
+/* PVP bar */
+.pvp-bar{display:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:7px 14px;text-align:center;margin-bottom:9px;font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.07em;color:var(--dim);}
+.pvp-bar.show{display:block;}
+.pvp-bar .pi1{color:var(--p1);} .pvp-bar .pi2{color:var(--p2);}
 
-/* RESULT */
-.result-overlay { display: none; position: fixed; inset: 0; background: rgba(10,10,15,0.93); z-index: 100; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-.result-overlay.show { display: flex; }
-.result-card { background: var(--surface); border: 2px solid var(--border); border-radius: 16px; padding: 32px 24px; text-align: center; max-width: 380px; width: 92%; animation: rIn 0.4s cubic-bezier(0.34,1.56,0.64,1); }
-@keyframes rIn { from{transform:scale(0.8);opacity:0;} to{transform:scale(1);opacity:1;} }
-.rtitle { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; letter-spacing: 0.1em; line-height: 1; margin-bottom: 5px; }
-.rwin { color: var(--accent3); } .rp1 { color: var(--p1); } .rp2 { color: var(--p2); } .rlose { color: var(--accent2); }
-.rsub { color: var(--text-dim); font-size: 0.8rem; margin-bottom: 18px; }
-.rstats { background: var(--surface2); border-radius: 8px; padding: 13px; margin-bottom: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 9px; text-align: left; }
-.stat-lbl { font-size: 0.58rem; color: var(--text-dim); letter-spacing: 0.13em; text-transform: uppercase; }
-.stat-val { font-family: 'Space Mono', monospace; font-size: 0.96rem; color: var(--text); margin-top: 2px; }
-.rbtns { display: flex; gap: 8px; justify-content: center; }
-.rbtn { border-radius: 6px; padding: 9px 20px; font-family: 'Bebas Neue', sans-serif; font-size: 1.05rem; letter-spacing: 0.1em; cursor: pointer; border: none; transition: all 0.18s; }
-.rbtn.primary { background: var(--accent); color: var(--bg); }
-.rbtn.secondary { background: var(--surface2); color: var(--text-dim); border: 1px solid var(--border); }
-.rbtn:hover { transform: translateY(-2px); }
+/* Online info bar */
+.online-bar{display:none;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.2);border-radius:8px;padding:8px 14px;text-align:center;margin-bottom:9px;font-family:'Space Mono',monospace;font-size:.62rem;color:var(--accent);letter-spacing:.08em;}
+.online-bar.show{display:block;}
 
-/* COUNTDOWN */
-.cd-overlay { display: none; position: fixed; inset: 0; background: rgba(10,10,15,0.88); z-index: 150; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
-.cd-overlay.show { display: flex; }
-.cd-num { font-family: 'Bebas Neue', sans-serif; font-size: 9rem; line-height: 1; animation: cdpop 0.85s ease; }
-@keyframes cdpop { 0%{transform:scale(2.2);opacity:0;} 30%{transform:scale(1);opacity:1;} 80%{transform:scale(1);opacity:1;} 100%{transform:scale(0.7);opacity:0;} }
-.cd-num.go { color: var(--accent3); } .cd-num.num { color: var(--text); }
+/* ── BATTLE AREA ── */
+.battle-area{display:grid;grid-template-columns:1fr;gap:12px;}
+@media(min-width:600px){.battle-area.two-boards{grid-template-columns:1fr 1fr;}}
+.bwrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px;}
+.btitle{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.bwrap.p1b .btitle{color:var(--p1);} .bwrap.p2b .btitle{color:var(--p2);} .bwrap.aib .btitle{color:var(--ai);}
 
-/* NOTIF */
-.notif { position: fixed; top: 16px; left: 50%; transform: translateX(-50%) translateY(-60px); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 7px 16px; font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; z-index: 200; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); pointer-events: none; white-space: nowrap; }
-.notif.show { transform: translateX(-50%) translateY(0); }
-.notif.success { border-color: var(--accent3); color: var(--accent3); }
-.notif.error { border-color: var(--accent2); color: var(--accent2); }
-.notif.info { border-color: var(--accent); color: var(--accent); }
-.notif.p2n { border-color: var(--p2); color: var(--p2); }
+/* ── GRID ── */
+.sgrid{display:grid;grid-template-columns:repeat(9,1fr);border:2px solid var(--gb);border-radius:3px;overflow:hidden;width:100%;aspect-ratio:1;}
+.cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--bg);border:1px solid var(--gl);font-family:'Space Mono',monospace;font-size:clamp(1.05rem,4.5vw,1.55rem);font-weight:800;cursor:pointer;transition:background .11s;color:#fff;user-select:none;-webkit-tap-highlight-color:transparent;}
+.cell:nth-child(3n){border-right:2px solid var(--gb);}
+.cell:nth-child(9n){border-right:1px solid var(--gl);}
+.cell[data-row="2"],.cell[data-row="5"]{border-bottom:2px solid var(--gb);}
+.cell.fixed{background:var(--fb);color:#fff;cursor:default;font-weight:900;text-shadow:0 0 8px rgba(180,180,255,.5);}
+.cell.sel1{background:rgba(0,229,255,.18)!important;}
+.cell.sel2{background:rgba(255,157,0,.2)!important;}
+.cell.hl1{background:rgba(0,229,255,.05);}
+.cell.hl2{background:rgba(255,157,0,.05);}
+.cell.err{color:#ff4477!important;text-shadow:0 0 8px rgba(255,60,110,.6)!important;}
+.cell.cf{animation:cflash .35s ease;}
+@keyframes cflash{0%{background:rgba(170,255,0,.38);}100%{background:transparent;}}
+.cell.p2fill{color:var(--p2);text-shadow:0 0 6px rgba(255,157,0,.5);}
+.cell.aifill{color:#ff6e96;text-shadow:0 0 6px rgba(255,60,110,.5);}
+.cell.onlinefill{color:var(--p2);opacity:.75;}
 
-@media (max-width: 420px) { .player-score { font-size: 1.2rem; } .timer-display { font-size: 1.2rem; } }
+/* mini opp grid */
+.opp-mini{margin-top:8px;}
+.opp-mini-lbl{font-size:.56rem;color:var(--dim);letter-spacing:.16em;text-transform:uppercase;margin-bottom:5px;}
+.mgrid{display:grid;grid-template-columns:repeat(9,1fr);border:2px solid var(--gb);border-radius:2px;overflow:hidden;width:100%;aspect-ratio:1;}
+.mcell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:var(--bg);border:1px solid var(--gl);font-family:'Space Mono',monospace;font-size:clamp(.36rem,.95vw,.58rem);color:var(--ft,#8888bb);}
+.mcell:nth-child(3n){border-right:2px solid var(--gb);}
+.mcell:nth-child(9n){border-right:1px solid var(--gl);}
+.mcell[data-row="2"],.mcell[data-row="5"]{border-bottom:2px solid var(--gb);}
+.mcell.mfixed{background:var(--fb);color:#aaaacc;font-weight:700;}
+.mcell.mfill{color:var(--p2);animation:cflash .4s ease;}
+
+/* numpad */
+.numpad{display:grid;grid-template-columns:repeat(9,1fr);gap:3px;margin-top:8px;}
+.nb{aspect-ratio:1;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:#fff;font-family:'Space Mono',monospace;font-size:clamp(1rem,4vw,1.3rem);font-weight:800;cursor:pointer;transition:all .11s;display:flex;align-items:center;justify-content:center;}
+.nb:hover{background:rgba(0,229,255,.1);border-color:var(--accent);}
+.nb:active{transform:scale(.88);}
+.nb.p2s:hover{background:rgba(255,157,0,.1);border-color:var(--p2);}
+.tool-row{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:3px;}
+.tb{background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:5px 4px;cursor:pointer;font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:.03em;color:var(--dim);transition:all .11s;text-align:center;}
+.tb:hover{border-color:var(--accent);color:var(--accent);}
+.tb.on{border-color:var(--accent3);color:var(--accent3);}
+
+/* progress */
+.pw{margin-top:7px;background:var(--border);border-radius:2px;height:3px;overflow:hidden;}
+.pf{height:100%;border-radius:2px;transition:width .35s ease;}
+.p1b .pf{background:var(--p1);} .p2b .pf,.aib .pf{background:var(--p2);}
+
+/* controls */
+.ctrl{display:flex;gap:7px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
+.cbtn{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:6px 13px;font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.1em;color:var(--dim);cursor:pointer;transition:all .13s;text-transform:uppercase;}
+.cbtn:hover{border-color:var(--accent);color:var(--accent);}
+.cbtn.hint{border-color:rgba(170,255,0,.3);color:var(--accent3);}
+.cbtn.hint2{border-color:rgba(255,157,0,.3);color:var(--p2);}
+.cbtn.quit{border-color:rgba(255,60,110,.3);color:var(--accent2);}
+.hcnt{font-family:'Bebas Neue',sans-serif;font-size:.8rem;margin-left:2px;}
+
+/* ── RESULT ── */
+.result-ov{display:none;position:fixed;inset:0;background:rgba(10,10,15,.93);z-index:100;align-items:center;justify-content:center;backdrop-filter:blur(5px);}
+.result-ov.show{display:flex;}
+.rc{background:var(--surface);border:2px solid var(--border);border-radius:16px;padding:30px 24px;text-align:center;max-width:390px;width:92%;animation:rIn .4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes rIn{from{transform:scale(.8);opacity:0;}to{transform:scale(1);opacity:1;}}
+.rtitle{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:.1em;line-height:1;margin-bottom:5px;}
+.rsub{color:var(--dim);font-size:.8rem;margin-bottom:15px;}
+.rstats{background:var(--surface2);border-radius:8px;padding:13px;margin-bottom:15px;display:grid;grid-template-columns:1fr 1fr;gap:9px;text-align:left;}
+.sl{font-size:.56rem;color:var(--dim);letter-spacing:.13em;text-transform:uppercase;}
+.sv{font-family:'Space Mono',monospace;font-size:.92rem;color:var(--text);margin-top:2px;}
+.rbtns{display:flex;gap:8px;justify-content:center;}
+.rbtn{border-radius:6px;padding:9px 20px;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.1em;cursor:pointer;border:none;transition:all .18s;}
+.rbtn.p{background:var(--accent);color:var(--bg);}
+.rbtn.s{background:var(--surface2);color:var(--dim);border:1px solid var(--border);}
+.rbtn:hover{transform:translateY(-2px);}
+
+/* ── COUNTDOWN ── */
+.cd-ov{display:none;position:fixed;inset:0;background:rgba(10,10,15,.88);z-index:150;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.cd-ov.show{display:flex;}
+.cdn{font-family:'Bebas Neue',sans-serif;font-size:9rem;line-height:1;animation:cdp .85s ease;}
+@keyframes cdp{0%{transform:scale(2.2);opacity:0;}30%{transform:scale(1);opacity:1;}80%{transform:scale(1);opacity:1;}100%{transform:scale(.7);opacity:0;}}
+.cdn.go{color:var(--accent3);} .cdn.num{color:var(--text);}
+
+/* ── NOTIF ── */
+.notif{position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-70px);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:7px 16px;font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.08em;z-index:400;transition:transform .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap;}
+.notif.show{transform:translateX(-50%) translateY(0);}
+.notif.ok{border-color:var(--accent3);color:var(--accent3);}
+.notif.err{border-color:var(--accent2);color:var(--accent2);}
+.notif.inf{border-color:var(--accent);color:var(--accent);}
+.notif.p2n{border-color:var(--p2);color:var(--p2);}
+
+@media(max-width:420px){.pscore{font-size:1.2rem;}.tdisp{font-size:1.2rem;}}
+@media(max-width:480px){
+  .cell{font-size:clamp(1.15rem,5.5vw,1.6rem)!important;}
+  .nb{font-size:clamp(1.1rem,5vw,1.4rem)!important;}
+  .sgrid{border-width:2px;}
+  .tb{font-size:.68rem;padding:7px 4px;}
+}
 </style>
 </head>
 <body>
-<div class="container">
+<div class="wrap">
   <header>
     <div class="logo">数独 BATTLE</div>
-    <div class="logo-sub">Sudoku · Strategy · Speed</div>
+    <div class="logo-sub">Sudoku · Online · Strategy</div>
   </header>
 
-  <!-- START -->
+  <!-- ══ 로비 ══ -->
   <div id="startScreen" class="screen active">
-    <div class="start-card">
-      <h2>게임 모드 선택</h2>
+    <div class="card">
+      <div class="section-lbl">🌐 온라인 — 서로 다른 장소에서 대결</div>
+      <div class="online-row">
+        <div class="ob create" onclick="openCreate()">
+          <div class="ob-icon">🏠</div>
+          <div class="ob-title">방 만들기</div>
+          <div class="ob-desc">코드로 친구 초대</div>
+        </div>
+        <div class="ob join" onclick="openJoin()">
+          <div class="ob-icon">🚪</div>
+          <div class="ob-title">방 참가</div>
+          <div class="ob-desc">6자리 코드 입력</div>
+        </div>
+      </div>
+
+      <div class="divider">또는 혼자 / 같은 기기로 플레이</div>
+
       <div class="mode-grid">
-        <div class="mode-btn selected" data-mode="solo" onclick="selectMode('solo',this)">
-          <div class="mode-icon">⏱</div>
-          <div class="mode-title">솔로 타임어택</div>
-          <div class="mode-desc">혼자 도전, 최고 기록 갱신</div>
+        <div class="mode-btn selected" data-mode="solo" onclick="selMode('solo',this)">
+          <div class="mi">⏱</div><div class="mt">솔로</div><div class="md">타임어택</div>
         </div>
-        <div class="mode-btn pvp" data-mode="pvp" onclick="selectMode('pvp',this)">
-          <div class="mode-icon">⚔️</div>
-          <div class="mode-title">1 vs 1 대결 <span class="pvp-badge">NEW</span></div>
-          <div class="mode-desc">같은 기기에서 두 플레이어 동시 경쟁</div>
+        <div class="mode-btn pvp" data-mode="pvp" onclick="selMode('pvp',this)">
+          <div class="mi">⚔️</div><div class="mt">같은기기 1v1</div><div class="md">한 화면 대결</div>
         </div>
-        <div class="mode-btn" data-mode="ai" onclick="selectMode('ai',this)">
-          <div class="mode-icon">🤖</div>
-          <div class="mode-title">AI 대전</div>
-          <div class="mode-desc">봇과 같은 퍼즐 실시간 경쟁</div>
+        <div class="mode-btn" data-mode="ai" onclick="selMode('ai',this)">
+          <div class="mi">🤖</div><div class="mt">AI 대전</div><div class="md">봇과 경쟁</div>
         </div>
-        <div class="mode-btn" data-mode="coop" onclick="selectMode('coop',this)">
-          <div class="mode-icon">🤝</div>
-          <div class="mode-title">협력 모드</div>
-          <div class="mode-desc">같은 보드를 함께 클리어</div>
+        <div class="mode-btn" data-mode="coop" onclick="selMode('coop',this)">
+          <div class="mi">🤝</div><div class="mt">협력</div><div class="md">같이 클리어</div>
         </div>
       </div>
-      <div class="diff-label">난이도</div>
-      <div class="diff-btns">
-        <div class="diff-btn selected" data-diff="easy" onclick="selectDiff('easy',this)">EASY</div>
-        <div class="diff-btn" data-diff="medium" onclick="selectDiff('medium',this)">MEDIUM</div>
-        <div class="diff-btn" data-diff="hard" onclick="selectDiff('hard',this)">HARD</div>
+      <div class="diff-lbl">난이도</div>
+      <div class="diff-row">
+        <div class="diff-btn selected" data-diff="easy" onclick="selDiff('easy',this)">EASY</div>
+        <div class="diff-btn" data-diff="medium" onclick="selDiff('medium',this)">MEDIUM</div>
+        <div class="diff-btn" data-diff="hard" onclick="selDiff('hard',this)">HARD</div>
       </div>
-      <button class="start-btn" onclick="startGame()">START GAME</button>
+      <button class="start-btn" onclick="startOffline()">START GAME</button>
     </div>
   </div>
 
-  <!-- GAME -->
-  <div id="gameScreen" class="screen">
-    <div class="status-bar">
-      <div class="player-info p1">
-        <div class="player-name" id="p1Name">YOU</div>
-        <div class="player-score" id="p1Score">0</div>
-        <div class="player-progress" id="p1Prog">0 / —</div>
+  <!-- ══ 대기실 ══ -->
+  <div id="waitScreen" class="screen">
+    <div class="card" style="text-align:center">
+      <div class="section-lbl" id="waitTitle">방 대기중</div>
+      <div style="font-family:'Space Mono',monospace;font-size:.62rem;color:var(--dim);letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px">방 코드</div>
+      <div class="room-code-big" id="roomCodeDisp">——</div>
+      <div style="font-size:.66rem;color:var(--dim);margin-bottom:14px">친구에게 이 코드를 알려주세요</div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:18px;flex-wrap:wrap">
+        <button class="copy-btn" id="copyCodeBtn" onclick="copyCode()">📋 코드 복사</button>
+        <button class="copy-btn" onclick="copyLink()">🔗 링크 복사</button>
       </div>
-      <div class="timer-block">
-        <div class="timer-display" id="timerDisp">00:00</div>
-        <div class="timer-label">TIME</div>
-        <div class="ai-thinking" id="aiThink">
-          <div class="dot-pulse"><span></span><span></span><span></span></div>
-          <span>AI</span>
-        </div>
+      <div class="wait-slots" id="waitSlots">
+        <div class="wslot p1s" id="wslot1"><div class="ws-icon">👤</div><div class="ws-name" id="ws1name">대기중…</div><div class="ws-role">P1</div></div>
+        <div class="wslot p2s" id="wslot2"><div class="ws-icon">👤</div><div class="ws-name" id="ws2name">초대 대기</div><div class="ws-role">P2</div></div>
       </div>
-      <div class="player-info p2">
-        <div class="player-name" id="p2Name">—</div>
-        <div class="player-score" id="p2Score">—</div>
-        <div class="player-progress" id="p2Prog">—</div>
+      <div class="waiting-pulse"><div class="pulse-dot"></div>&nbsp; 상대방을 기다리는 중…</div>
+      <div style="margin-top:10px;font-size:.63rem;color:var(--dim)">
+        모드: <span id="waitModeText" style="color:var(--accent)">—</span> &nbsp;|&nbsp;
+        난이도: <span id="waitDiffText" style="color:var(--accent3)">—</span>
       </div>
+      <button class="cbtn quit" style="margin-top:16px" onclick="leaveWait()">← 나가기</button>
     </div>
+  </div>
 
-    <!-- PVP controls info -->
-    <div class="pvp-info-bar" id="pvpInfoBar">
-      <span class="pi1">P1: 마우스클릭 셀 선택 → 숫자키(1~9) 입력</span>
-      &nbsp;|&nbsp;
-      <span class="pi2">P2: 마우스클릭 셀 선택 → 숫자패드(1~9) 입력</span>
+  <!-- ══ 게임 화면 ══ -->
+  <div id="gameScreen" class="screen">
+    <div class="online-bar" id="onlineBar">🌐 온라인 대결 중</div>
+    <div class="status-bar">
+      <div class="pinfo p1"><div class="pname" id="p1Name">P1</div><div class="pscore" id="p1Score">0</div><div class="pprog" id="p1Prog">0/—</div></div>
+      <div class="tblk"><div class="tdisp" id="tDisp">00:00</div><div class="tlbl">TIME</div>
+        <div class="ai-think" id="aiThink"><div class="dot-pulse"><span></span><span></span><span></span></div><span>AI</span></div>
+      </div>
+      <div class="pinfo p2"><div class="pname" id="p2Name">P2</div><div class="pscore" id="p2Score">—</div><div class="pprog" id="p2Prog">—</div></div>
+    </div>
+    <div class="pvp-bar" id="pvpBar">
+      <span class="pi1">P1: 터치/클릭 + 숫자(1~9)</span> &nbsp;|&nbsp; <span class="pi2">P2: 터치/클릭 + 숫자패드(1~9)</span>
     </div>
 
     <div class="battle-area" id="battleArea">
-      <!-- P1 board -->
-      <div class="board-wrapper p1board" id="p1BW">
-        <div class="board-title">
-          <span id="p1BTitle">▶ YOUR BOARD</span>
-          <span id="p1HBadge" style="font-size:0.56rem;color:var(--accent3)">HINT ×3</span>
-        </div>
-        <div class="sudoku-grid" id="p1Grid"></div>
+      <div class="bwrap p1b" id="p1BW">
+        <div class="btitle"><span id="p1BTitle">▶ YOUR BOARD</span><span id="p1HBadge" style="font-size:.54rem;color:var(--accent3)">HINT×3</span></div>
+        <div class="sgrid" id="p1Grid"></div>
         <div class="pw"><div class="pf" id="p1PF" style="width:0%"></div></div>
-        <div id="p1NumWrap">
+        <div id="p1NW">
           <div class="numpad" id="p1Pad"></div>
           <div class="tool-row">
-            <button class="tbtn" onclick="eraseCell(1)">⌫ 지우기</button>
-            <button class="tbtn" onclick="toggleNotes(1)" id="nb1">✏ 메모 OFF</button>
+            <button class="tb" onclick="eraseCell(1)">⌫ 지우기</button>
+            <button class="tb" onclick="toggleNote(1)" id="nb1">✏ 메모 OFF</button>
           </div>
         </div>
       </div>
-
-      <!-- P2 / AI board -->
-      <div class="board-wrapper p2board" id="p2BW" style="display:none">
-        <div class="board-title">
-          <span id="p2BTitle">◀ P2</span>
-          <span id="p2HBadge" style="font-size:0.56rem;color:var(--p2)">HINT ×3</span>
-        </div>
-        <div class="sudoku-grid" id="p2Grid"></div>
+      <div class="bwrap p2b" id="p2BW" style="display:none">
+        <div class="btitle"><span id="p2BTitle">◀ P2</span><span id="p2HBadge" style="font-size:.54rem;color:var(--p2)">HINT×3</span></div>
+        <div class="sgrid" id="p2Grid"></div>
         <div class="pw"><div class="pf" id="p2PF" style="width:0%"></div></div>
-        <div id="p2NumWrap">
+        <div id="p2NW">
           <div class="numpad" id="p2Pad"></div>
           <div class="tool-row">
-            <button class="tbtn" onclick="eraseCell(2)">⌫ 지우기</button>
-            <button class="tbtn" onclick="toggleNotes(2)" id="nb2">✏ 메모 OFF</button>
+            <button class="tb" onclick="eraseCell(2)">⌫ 지우기</button>
+            <button class="tb" onclick="toggleNote(2)" id="nb2">✏ 메모 OFF</button>
           </div>
         </div>
       </div>
     </div>
-
-    <div class="controls" id="ctrlBar"></div>
+    <div class="ctrl" id="ctrlBar"></div>
   </div>
 </div>
 
-<!-- Result -->
-<div class="result-overlay" id="resultOv">
-  <div class="result-card">
+<!-- ══ 방 만들기 모달 ══ -->
+<div class="modal-bg" id="createModal">
+  <div class="modal">
+    <h3 class="c1">🏠 방 만들기</h3>
+    <div class="flbl">내 닉네임</div>
+    <input class="finput" id="createName" placeholder="Player1" maxlength="12">
+    <div class="flbl">게임 모드</div>
+    <div class="mmode-row">
+      <div class="mmbtn sel" data-mm="battle" onclick="selMM('battle',this)"><div class="mmi">⚔️</div><div class="mmt">1v1 대결</div></div>
+      <div class="mmbtn" data-mm="coop" onclick="selMM('coop',this)"><div class="mmi">🤝</div><div class="mmt">협력</div></div>
+    </div>
+    <div class="flbl">난이도</div>
+    <div class="mdiff-row">
+      <div class="mdbtn sel" data-md="easy" onclick="selMD('easy',this)">EASY</div>
+      <div class="mdbtn" data-md="medium" onclick="selMD('medium',this)">MEDIUM</div>
+      <div class="mdbtn" data-md="hard" onclick="selMD('hard',this)">HARD</div>
+    </div>
+    <div class="server-note">💡 서버 URL을 설정해야 온라인 대결이 가능합니다.<br>Railway 배포 후: <a href="#" onclick="openServerSetting();return false;">서버 주소 입력</a></div>
+    <div class="modal-btns">
+      <button class="mbtn p1" onclick="doCreate()">방 생성</button>
+      <button class="mbtn cancel" onclick="closeModal('createModal')">취소</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 방 참가 모달 ══ -->
+<div class="modal-bg" id="joinModal">
+  <div class="modal">
+    <h3 class="c2">🚪 방 참가</h3>
+    <div class="flbl">내 닉네임</div>
+    <input class="finput c2f" id="joinName" placeholder="Player2" maxlength="12">
+    <div class="flbl">방 코드 (6자리)</div>
+    <input class="finput c2f code" id="joinCode" placeholder="ABC123" maxlength="6" oninput="this.value=this.value.toUpperCase()">
+    <div class="modal-btns">
+      <button class="mbtn p2" onclick="doJoin()">참가</button>
+      <button class="mbtn cancel" onclick="closeModal('joinModal')">취소</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 서버 설정 모달 ══ -->
+<div class="modal-bg" id="serverModal">
+  <div class="modal">
+    <h3 class="c1">⚙️ 서버 주소 설정</h3>
+    <div class="flbl">Railway / Render 서버 URL</div>
+    <input class="finput" id="serverUrl" placeholder="https://your-app.railway.app" style="font-size:.78rem;">
+    <div class="server-note" style="margin-bottom:14px">Railway 배포 후 생성된 URL을 입력하세요.<br>예: <span style="color:var(--accent)">https://sudoku-battle-xxxx.railway.app</span></div>
+    <div class="modal-btns">
+      <button class="mbtn p1" onclick="saveServer()">저장</button>
+      <button class="mbtn cancel" onclick="closeModal('serverModal')">취소</button>
+    </div>
+  </div>
+</div>
+
+<!-- Result / Countdown / Notif -->
+<div class="result-ov" id="resultOv">
+  <div class="rc">
     <div class="rtitle" id="rTitle">WIN!</div>
     <div class="rsub" id="rSub"></div>
     <div class="rstats" id="rStats"></div>
     <div class="rbtns">
-      <button class="rbtn primary" onclick="restartGame()">PLAY AGAIN</button>
-      <button class="rbtn secondary" onclick="goHome()">HOME</button>
+      <button class="rbtn p" onclick="restartGame()">PLAY AGAIN</button>
+      <button class="rbtn s" onclick="goHome()">HOME</button>
     </div>
   </div>
 </div>
-
-<!-- Countdown -->
-<div class="cd-overlay" id="cdOv">
-  <div class="cd-num num" id="cdNum">3</div>
-</div>
-
+<div class="cd-ov" id="cdOv"><div class="cdn num" id="cdN">3</div></div>
 <div class="notif" id="notif"></div>
 
+<!-- Socket.io (로드 실패해도 오프라인 동작) -->
 <script>
-// ============ SUDOKU ENGINE ============
-function genFull(){const g=Array.from({length:9},()=>Array(9).fill(0));fill(g);return g;}
-function fill(g){
-  const ns=shuf([1,2,3,4,5,6,7,8,9]);
-  for(let r=0;r<9;r++)for(let c=0;c<9;c++){
-    if(g[r][c]===0){
-      for(let n of ns){if(ok(g,r,c,n)){g[r][c]=n;if(fill(g))return true;g[r][c]=0;}}
-      return false;
-    }
-  }
-  return true;
+// Socket.io 동적 로드
+let _serverUrl = localStorage.getItem('sb_server') || '';
+function loadSocketIO(url, cb) {
+  const s = document.createElement('script');
+  s.src = url + '/socket.io/socket.io.js';
+  s.onload = cb;
+  s.onerror = () => { showNotif('서버 연결 실패. 서버 주소를 확인하세요.','err'); };
+  document.head.appendChild(s);
 }
-function ok(g,r,c,n){
-  for(let i=0;i<9;i++){
-    if(g[r][i]===n||g[i][c]===n)return false;
-    if(g[3*Math.floor(r/3)+Math.floor(i/3)][3*Math.floor(c/3)+(i%3)]===n)return false;
-  }
-  return true;
-}
+</script>
+<script>
+// ══════════════════════════════════════════
+// SUDOKU ENGINE
+// ══════════════════════════════════════════
+function genFull(){const g=Array.from({length:9},()=>Array(9).fill(0));fillG(g);return g;}
+function fillG(g){const ns=shuf([1,2,3,4,5,6,7,8,9]);for(let r=0;r<9;r++)for(let c=0;c<9;c++){if(g[r][c]===0){for(const n of ns){if(okC(g,r,c,n)){g[r][c]=n;if(fillG(g))return true;g[r][c]=0;}}return false;}}return true;}
+function okC(g,r,c,n){for(let i=0;i<9;i++){if(g[r][i]===n||g[i][c]===n)return false;if(g[3*Math.floor(r/3)+Math.floor(i/3)][3*Math.floor(c/3)+(i%3)]===n)return false;}return true;}
 function shuf(a){for(let i=a.length-1;i>0;i--){const j=0|Math.random()*(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
-function mkPuzzle(sol,diff){
+function mkPuz(sol,diff){
   const rm={easy:35,medium:46,hard:55}[diff]||40;
   const p=sol.map(r=>[...r]);let rd=0;
-  for(let idx of shuf([...Array(81).keys()])){
-    if(rd>=rm)break;
-    const r=0|idx/9,c=idx%9,bk=p[r][c];p[r][c]=0;
-    if(cntSol(p.map(x=>[...x]))===1)rd++;else p[r][c]=bk;
-  }
+  for(const idx of shuf([...Array(81).keys()])){if(rd>=rm)break;const r=0|idx/9,c=idx%9,bk=p[r][c];p[r][c]=0;if(cntS(p.map(x=>[...x]))===1)rd++;else p[r][c]=bk;}
   return p;
 }
-function cntSol(g,cnt={n:0}){
-  for(let r=0;r<9;r++)for(let c=0;c<9;c++){
-    if(g[r][c]===0){
-      for(let n=1;n<=9;n++){if(ok(g,r,c,n)){g[r][c]=n;cntSol(g,cnt);g[r][c]=0;if(cnt.n>1)return cnt.n;}}
-      return cnt.n;
-    }
-  }
-  cnt.n++;return cnt.n;
-}
+function cntS(g,cnt={n:0}){for(let r=0;r<9;r++)for(let c=0;c<9;c++){if(g[r][c]===0){for(let n=1;n<=9;n++){if(okC(g,r,c,n)){g[r][c]=n;cntS(g,cnt);g[r][c]=0;if(cnt.n>1)return cnt.n;}}return cnt.n;}}cnt.n++;return cnt.n;}
 
-// ============ STATE ============
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
 const S={
-  mode:'solo',diff:'easy',
-  sol:null,puz:null,
+  mode:'solo',diff:'easy',sol:null,puz:null,
   b1:null,n1:null,f1:0,s1:0,e1:0,h1:3,hu1:0,nm1:false,r1:-1,c1:-1,
   b2:null,n2:null,f2:0,s2:0,e2:0,h2:3,hu2:0,nm2:false,r2:-1,c2:-1,
-  tot:0,tsec:0,tInt:null,aiInt:null,on:false,aiDly:3000
+  tot:0,tsec:0,tInt:null,aiInt:null,on:false,aiDly:3000,
+  // online
+  online:false,socket:null,myRole:null,roomCode:null,oppBoard:null,
 };
-let sMode='solo',sDiff='easy';
+let sMode='solo',sDiff='easy',sMMode='battle',sMDiff='easy';
 
-function selectMode(m,el){sMode=m;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');}
-function selectDiff(d,el){sDiff=d;document.querySelectorAll('.diff-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');}
+function $(id){return document.getElementById(id);}
+function selMode(m,el){sMode=m;document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');}
+function selDiff(d,el){sDiff=d;document.querySelectorAll('.diff-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');}
+function selMM(m,el){sMMode=m;document.querySelectorAll('.mmbtn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');}
+function selMD(d,el){sMDiff=d;document.querySelectorAll('.mdbtn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');}
 
-// ============ START ============
-function startGame(){
-  Object.assign(S,{mode:sMode,diff:sDiff,f1:0,s1:0,e1:0,h1:3,hu1:0,nm1:false,r1:-1,c1:-1,f2:0,s2:0,e2:0,h2:3,hu2:0,nm2:false,r2:-1,c2:-1,tot:0,tsec:0,on:false});
+// ══════════════════════════════════════════
+// MODAL / SERVER SETTING
+// ══════════════════════════════════════════
+function openCreate(){$('createModal').classList.add('show');}
+function openJoin(){
+  const url=new URLSearchParams(location.search).get('room');
+  if(url)$('joinCode').value=url.toUpperCase();
+  $('joinModal').classList.add('show');
+}
+function closeModal(id){$(id).classList.remove('show');}
+function openServerSetting(){closeModal('createModal');$('serverUrl').value=localStorage.getItem('sb_server')||'';$('serverModal').classList.add('show');}
+function saveServer(){
+  const url=$('serverUrl').value.trim().replace(/\/$/,'');
+  if(!url){showNotif('URL을 입력해주세요','err');return;}
+  localStorage.setItem('sb_server',url);_serverUrl=url;
+  closeModal('serverModal');showNotif('서버 주소 저장됨','ok');
+  $('createModal').classList.add('show');
+}
+
+// ══════════════════════════════════════════
+// ONLINE — 방 만들기 / 참가
+// ══════════════════════════════════════════
+function doCreate(){
+  const name=$('createName').value.trim()||'Player1';
+  if(!_serverUrl){openServerSetting();return;}
+  connectSocket(_serverUrl,()=>{
+    S.socket.emit('create_room',{name,mode:sMMode,difficulty:sMDiff});
+  });
+  closeModal('createModal');
+}
+
+function doJoin(){
+  const name=$('joinName').value.trim()||'Player2';
+  const code=$('joinCode').value.trim().toUpperCase();
+  if(!code||code.length<4){showNotif('코드를 입력해주세요','err');return;}
+  if(!_serverUrl){
+    // 서버 URL 자동 추출 시도 (같은 도메인)
+    _serverUrl=location.origin;
+  }
+  connectSocket(_serverUrl,()=>{
+    S.socket.emit('join_room',{name,code});
+  });
+  closeModal('joinModal');
+}
+
+function connectSocket(url, cb){
+  if(S.socket&&S.socket.connected){cb();return;}
+  if(typeof io==='undefined'){
+    loadSocketIO(url,()=>{setupSocket(url,cb);});
+  } else {
+    setupSocket(url,cb);
+  }
+}
+
+function setupSocket(url,cb){
+  if(S.socket) S.socket.disconnect();
+  S.socket=io(url,{transports:['websocket','polling']});
+  S.socket.on('connect',()=>{showNotif('서버 연결됨','ok');cb();});
+  S.socket.on('connect_error',()=>showNotif('서버 연결 실패','err'));
+  S.socket.on('disconnect',()=>showNotif('연결 끊김','err'));
+
+  S.socket.on('error',({msg})=>showNotif(msg,'err'));
+
+  S.socket.on('room_created',({code,role,state})=>{
+    S.online=true;S.myRole=role;S.roomCode=code;
+    sessionStorage.setItem('sb_r',JSON.stringify({code,name:$('createName').value||'Player1',role}));
+    setupOnlineRoom(state);
+    showScreen('waitScreen');
+    $('roomCodeDisp').textContent=code;
+    $('waitTitle').textContent='⚔️ 방 대기중';
+    $('waitModeText').textContent=state.mode==='battle'?'1v1 대결':'협력';
+    $('waitDiffText').textContent=state.difficulty.toUpperCase();
+    updateWaitSlots(state);
+  });
+
+  S.socket.on('room_joined',({role,state,chat})=>{
+    S.online=true;S.myRole=role;S.roomCode=state.code;
+    setupOnlineRoom(state);
+    if(state.gameState==='playing'){enterOnlineGame(state);}
+    else{
+      showScreen('waitScreen');
+      $('roomCodeDisp').textContent=state.code;
+      $('waitTitle').textContent='🚪 방 입장 완료';
+      $('waitModeText').textContent=state.mode==='battle'?'1v1 대결':'협력';
+      $('waitDiffText').textContent=state.difficulty.toUpperCase();
+      updateWaitSlots(state);
+    }
+  });
+
+  S.socket.on('room_update',(state)=>{
+    updateWaitSlots(state);
+    if(document.getElementById('waitScreen').classList.contains('active')&&state.players.length===2)
+      showNotif('상대방이 입장했습니다! 🎉','ok');
+  });
+
+  S.socket.on('countdown_start',()=>$('cdOv').classList.add('show'));
+  S.socket.on('countdown_tick',({n})=>{
+    const el=$('cdN');el.textContent=n===0?'GO!':n;el.className='cdn '+(n===0?'go':'num');
+    el.style.animation='none';el.offsetHeight;el.style.animation='';
+    if(n===0)setTimeout(()=>$('cdOv').classList.remove('show'),700);
+  });
+
+  S.socket.on('game_start',({startTime})=>{
+    S.on=true;S.tsec=0;
+    showScreen('gameScreen');
+    setupOnlineGameUI();
+    renderGrid(1);renderOppMini();
+    startTimer();
+    showNotif('게임 시작!','ok');
+  });
+
+  S.socket.on('cell_update',({playerId,row,col,value,correct,progress})=>{
+    if(playerId!==S.socket.id){
+      if(!S.oppBoard)S.oppBoard=S.puz.map(r=>[...r]);
+      S.oppBoard[row][col]=value;
+      renderOppMini();
+      flashOppCell(row,col);
+    } else if(correct){
+      S.b1[row][col]=value;S.f1++;
+      renderGrid(1);
+    }
+    if(progress)updateOnlineProgress(progress);
+  });
+
+  S.socket.on('cell_erased',({playerId,row,col,progress})=>{
+    if(playerId!==S.socket.id&&S.oppBoard){S.oppBoard[row][col]=0;renderOppMini();}
+    if(progress)updateOnlineProgress(progress);
+  });
+
+  S.socket.on('hint_result',({row,col,value,hintsLeft})=>{
+    S.b1[row][col]=value;S.h1=hintsLeft;
+    $('p1HBadge').textContent='HINT×'+hintsLeft;
+    renderGrid(1);selectCell(1,row,col);
+  });
+
+  S.socket.on('game_over',({winnerId,winnerName,elapsed,finalProgress,solution})=>{
+    S.on=false;S.sol=solution;clearInterval(S.tInt);
+    const isMe=winnerId===S.socket.id;
+    const myP=finalProgress.find(p=>p.id===S.socket.id);
+    const oppP=finalProgress.find(p=>p.id!==S.socket.id);
+    const m=String(0|elapsed/60000).padStart(2,'0'),sec=String(0|(elapsed%60000)/1000).padStart(2,'0');
+    showResult(isMe?'p1win':'p2win',m+':'+sec,myP,oppP,winnerName);
+  });
+
+  S.socket.on('game_paused',({reason})=>showNotif(reason,'err'));
+  S.socket.on('game_aborted',({reason})=>{showNotif(reason,'err');clearInterval(S.tInt);});
+  S.socket.on('player_disconnected',({name})=>showNotif(name+' 연결 끊김','err'));
+}
+
+function setupOnlineRoom(state){
+  S.puz=state.puzzle;S.sol=null;S.tot=state.totalEmpty;
+  S.b1=state.puzzle.map(r=>[...r]);
+  S.n1=Array.from({length:9},()=>Array.from({length:9},()=>new Set()));
+  S.oppBoard=state.puzzle.map(r=>[...r]);
+  S.mode=state.mode;S.diff=state.difficulty;
+}
+
+function enterOnlineGame(state){
+  setupOnlineRoom(state);setupOnlineGameUI();
+  showScreen('gameScreen');renderGrid(1);renderOppMini();
+}
+
+function setupOnlineGameUI(){
+  const me=S.players?S.players.find(p=>p.role===S.myRole):null;
+  const opp=S.players?S.players.find(p=>p.role!==S.myRole):null;
+  $('p1BW').className='bwrap p1b';
+  $('p2BW').style.display='';
+  $('p2BW').className='bwrap p2b';
+  $('battleArea').className='battle-area two-boards';
+  $('onlineBar').classList.add('show');
+  $('pvpBar').classList.remove('show');
+  $('aiThink').classList.remove('show');
+  $('p1Name').textContent=me?.name||'YOU';
+  $('p2Name').textContent=opp?.name||'상대방';
+  $('p1BTitle').textContent='▶ MY BOARD';
+  $('p2BTitle').textContent='◀ 상대방';
+  $('p2NW').style.display='none'; // 상대방 보드는 미니 뷰
+  // 상대방 보드에 미니 그리드 표시
+  const p2grid=$('p2Grid');
+  p2grid.style.display='none';
+  let mini=$('oppMiniWrap');
+  if(!mini){mini=document.createElement('div');mini.id='oppMiniWrap';mini.className='opp-mini';$('p2BW').appendChild(mini);}
+  mini.innerHTML='<div class="opp-mini-lbl">실시간 진행도</div><div class="mgrid" id="oppMGrid"></div>';
+  renderOppMini();
+  buildPad(1);
+  $('ctrlBar').innerHTML=`<button class="cbtn hint" onclick="onlineHint()">HINT<span class="hcnt" id="hc1">${S.h1}</span></button><button class="cbtn" onclick="toggleNote(1)" id="nb1">✏ 메모 OFF</button><button class="cbtn quit" onclick="leaveGame()">← 나가기</button>`;
+  updateOnlineUI();
+}
+
+function updateWaitSlots(state){
+  S.players=state.players;
+  const p1=state.players.find(p=>p.role==='p1');
+  const p2=state.players.find(p=>p.role==='p2');
+  if(p1){$('wslot1').classList.add('filled');$('ws1name').textContent=p1.name;}
+  if(p2){$('wslot2').classList.add('filled');$('ws2name').textContent=p2.name;}
+}
+
+function updateOnlineProgress(progress){
+  S.players=progress;
+  const me=progress.find(p=>p.id===S.socket?.id);
+  const opp=progress.find(p=>p.id!==S.socket?.id);
+  if(me){S.f1=me.filled;S.s1=me.score;S.e1=me.errors;}
+  if(opp){S.f2=opp.filled;S.s2=opp.score;}
+  updateOnlineUI();
+}
+
+function updateOnlineUI(){
+  const me=S.players?.find(p=>p.role===S.myRole)||{score:S.s1,filled:S.f1};
+  const opp=S.players?.find(p=>p.role!==S.myRole&&p.role!=='spectator')||{score:S.s2,filled:S.f2};
+  const p1d=S.myRole==='p1'?me:opp, p2d=S.myRole==='p2'?me:opp;
+  $('p1Score').textContent=p1d?.score??0;
+  $('p2Score').textContent=p2d?.score??0;
+  $('p1Prog').textContent=`${me?.filled??0}/${S.tot}`;
+  $('p2Prog').textContent=`${opp?.filled??0}/${S.tot}`;
+  $('p1PF').style.width=`${((me?.filled??0)/S.tot)*100}%`;
+  $('p2PF').style.width=`${((opp?.filled??0)/S.tot)*100}%`;
+}
+
+function renderOppMini(){
+  const g=$('oppMGrid');if(!g||!S.puz)return;
+  g.innerHTML='';
+  for(let r=0;r<9;r++)for(let c=0;c<9;c++){
+    const cel=document.createElement('div');cel.className='mcell';cel.dataset.row=r;
+    const v=S.oppBoard?.[r]?.[c]??S.puz[r][c];
+    if(S.puz[r][c]!==0){cel.classList.add('mfixed');cel.textContent=v;}
+    else if(v!==0){cel.classList.add('mfill');cel.textContent=v;}
+    g.appendChild(cel);
+  }
+}
+
+function flashOppCell(r,c){
+  setTimeout(()=>{
+    const cells=document.querySelectorAll(`#oppMGrid .mcell`);
+    const idx=r*9+c;if(cells[idx]){cells[idx].style.animation='none';cells[idx].offsetHeight;cells[idx].style.animation='';}
+  },20);
+}
+
+function onlineHint(){
+  if(!S.on||!S.socket)return;
+  if(S.h1<=0){showNotif('힌트 없음!','err');return;}
+  let t=null;
+  if(S.r1>=0&&S.puz[S.r1][S.c1]===0&&S.b1[S.r1][S.c1]===0)t=[S.r1,S.c1];
+  else{const em=[];for(let r=0;r<9;r++)for(let c=0;c<9;c++)if(S.puz[r][c]===0&&S.b1[r][c]===0)em.push([r,c]);if(em.length)t=em[0|Math.random()*em.length];}
+  if(!t)return;
+  S.socket.emit('use_hint',{row:t[0],col:t[1]});
+}
+
+function leaveWait(){S.online=false;if(S.socket)S.socket.disconnect();sessionStorage.removeItem('sb_r');showScreen('startScreen');}
+function leaveGame(){S.on=false;S.online=false;clearInterval(S.tInt);clearInterval(S.aiInt);if(S.socket)S.socket.disconnect();showScreen('startScreen');}
+
+function copyCode(){
+  if(!S.roomCode)return;
+  navigator.clipboard?.writeText(S.roomCode).then(()=>{const b=$('copyCodeBtn');b.textContent='✅ 복사됨';b.classList.add('done');setTimeout(()=>{b.textContent='📋 코드 복사';b.classList.remove('done');},2000);});
+}
+function copyLink(){
+  if(!S.roomCode)return;
+  const url=`${_serverUrl||location.origin}?room=${S.roomCode}`;
+  navigator.clipboard?.writeText(url).then(()=>showNotif('링크 복사됨!','ok'));
+}
+
+// ══════════════════════════════════════════
+// OFFLINE GAME
+// ══════════════════════════════════════════
+function startOffline(){
+  S.online=false;S.mode=sMode;S.diff=sDiff;
+  Object.assign(S,{f1:0,s1:0,e1:0,h1:3,hu1:0,nm1:false,r1:-1,c1:-1,f2:0,s2:0,e2:0,h2:3,hu2:0,nm2:false,r2:-1,c2:-1,tot:0,tsec:0,on:false});
   clearInterval(S.tInt);clearInterval(S.aiInt);
-  S.sol=genFull();S.puz=mkPuzzle(S.sol,S.diff);
+  S.sol=genFull();S.puz=mkPuz(S.sol,S.diff);
   S.b1=S.puz.map(r=>[...r]);S.b2=S.puz.map(r=>[...r]);
   S.n1=Array.from({length:9},()=>Array.from({length:9},()=>new Set()));
   S.n2=Array.from({length:9},()=>Array.from({length:9},()=>new Set()));
   S.tot=S.puz.flat().filter(v=>v===0).length;
   S.aiDly={easy:4800,medium:2600,hard:1400}[S.diff]||3000;
-  setupUI();showScreen('gameScreen');
+  setupOfflineUI();
+  showScreen('gameScreen');
   countdown(()=>{S.on=true;startTimer();if(S.mode==='ai')startAI();});
 }
 
-function setupUI(){
-  const p1bw=document.getElementById('p1BW'),p2bw=document.getElementById('p2BW');
-  const ba=document.getElementById('battleArea'),ctrl=document.getElementById('ctrlBar');
-  const pvpBar=document.getElementById('pvpInfoBar'),aiThink=document.getElementById('aiThink');
-  p1bw.className='board-wrapper p1board';p2bw.className='board-wrapper p2board';
-  pvpBar.classList.remove('show');aiThink.classList.remove('show');
+function setupOfflineUI(){
+  $('onlineBar').classList.remove('show');
+  $('p2BW').className='bwrap p2b';
+  const ba=$('battleArea'),ctrl=$('ctrlBar');
+  const pvp=$('pvpBar'),ait=$('aiThink');
+  pvp.classList.remove('show');ait.classList.remove('show');
+  // restore grids
+  $('p2Grid').style.display='';
+  const mini=$('oppMiniWrap');if(mini)mini.remove();
 
   if(S.mode==='pvp'){
-    ba.className='battle-area two-boards';p2bw.style.display='';
-    pvpBar.classList.add('show');
+    ba.className='battle-area two-boards';$('p2BW').style.display='';
+    pvp.classList.add('show');
     $('p1Name').textContent='P1';$('p2Name').textContent='P2';
     $('p1BTitle').textContent='▶ P1 BOARD';$('p2BTitle').textContent='▶ P2 BOARD';
-    $('p2HBadge').style.display='';$('p2NumWrap').style.display='';
-    $('p2Score').textContent='0';$('p2Prog').textContent='0 / '+S.tot;
+    $('p2HBadge').style.display='';$('p2NW').style.display='';
+    $('p2Score').textContent='0';$('p2Prog').textContent='0/'+S.tot;
     ctrl.innerHTML=`<button class="cbtn hint" onclick="useHint(1)">P1 힌트<span class="hcnt" id="hc1">3</span></button><button class="cbtn hint2" onclick="useHint(2)">P2 힌트<span class="hcnt" id="hc2">3</span></button><button class="cbtn quit" onclick="quitGame()">QUIT</button>`;
   } else if(S.mode==='ai'){
-    ba.className='battle-area two-boards';p2bw.style.display='';
-    p2bw.className='board-wrapper aiboard';
-    aiThink.classList.add('show');
+    ba.className='battle-area two-boards';$('p2BW').style.display='';
+    $('p2BW').className='bwrap aib';ait.classList.add('show');
     $('p1Name').textContent='YOU';$('p2Name').textContent='AI';
     $('p1BTitle').textContent='▶ YOUR BOARD';$('p2BTitle').textContent='◀ AI';
-    $('p2HBadge').style.display='none';$('p2NumWrap').style.display='none';
-    $('p2Score').textContent='0';$('p2Prog').textContent='0 / '+S.tot;
-    ctrl.innerHTML=`<button class="cbtn hint" onclick="useHint(1)">HINT<span class="hcnt" id="hc1">3</span></button><button class="cbtn" onclick="toggleNotes(1)" id="nb1">✏ 메모 OFF</button><button class="cbtn quit" onclick="quitGame()">QUIT</button>`;
+    $('p2HBadge').style.display='none';$('p2NW').style.display='none';
+    $('p2Score').textContent='0';$('p2Prog').textContent='0/'+S.tot;
+    ctrl.innerHTML=`<button class="cbtn hint" onclick="useHint(1)">HINT<span class="hcnt" id="hc1">3</span></button><button class="cbtn" onclick="toggleNote(1)" id="nb1">✏ 메모 OFF</button><button class="cbtn quit" onclick="quitGame()">QUIT</button>`;
   } else {
-    ba.className='battle-area';p2bw.style.display='none';
-    const lbl=S.mode==='coop'?'P1+P2 협력':'YOU';
-    $('p1Name').textContent=lbl;$('p2Name').textContent='—';
+    ba.className='battle-area';$('p2BW').style.display='none';
+    $('p1Name').textContent=S.mode==='coop'?'COOP':'YOU';$('p2Name').textContent='—';
     $('p1BTitle').textContent=S.mode==='coop'?'▶ COOP BOARD':'▶ YOUR BOARD';
-    $('p2Score').textContent='—';$('p2Prog').textContent=S.mode==='coop'?'협력 모드':'타임어택';
-    ctrl.innerHTML=`<button class="cbtn hint" onclick="useHint(1)">HINT<span class="hcnt" id="hc1">3</span></button><button class="cbtn" onclick="toggleNotes(1)" id="nb1">✏ 메모 OFF</button><button class="cbtn quit" onclick="quitGame()">QUIT</button>`;
+    $('p2Score').textContent='—';$('p2Prog').textContent=S.mode==='coop'?'협력':'타임어택';
+    ctrl.innerHTML=`<button class="cbtn hint" onclick="useHint(1)">HINT<span class="hcnt" id="hc1">3</span></button><button class="cbtn" onclick="toggleNote(1)" id="nb1">✏ 메모 OFF</button><button class="cbtn quit" onclick="quitGame()">QUIT</button>`;
   }
   renderGrid(1);renderGrid(2);buildPad(1);buildPad(2);updateUI();
-  $('p1HBadge').textContent='HINT ×3';if($('p2HBadge'))$('p2HBadge').textContent='HINT ×3';
+  $('p1HBadge').textContent='HINT×3';if($('p2HBadge'))$('p2HBadge').textContent='HINT×3';
 }
 
-function $(id){return document.getElementById(id);}
-
-// ============ COUNTDOWN ============
+// ══════════════════════════════════════════
+// COUNTDOWN
+// ══════════════════════════════════════════
 function countdown(cb){
-  const ov=$('cdOv'),el=$('cdNum');
-  ov.classList.add('show');let n=3;el.textContent=n;el.className='cd-num num';
-  function tick(){
-    n--;
-    if(n<=0){el.textContent='GO!';el.className='cd-num go';setTimeout(()=>{ov.classList.remove('show');cb();},750);}
-    else{el.textContent=n;el.className='cd-num num';el.style.animation='none';el.offsetHeight;el.style.animation='';setTimeout(tick,900);}
-  }
+  const ov=$('cdOv'),el=$('cdN');ov.classList.add('show');let n=3;el.textContent=n;el.className='cdn num';
+  function tick(){n--;if(n<=0){el.textContent='GO!';el.className='cdn go';setTimeout(()=>{ov.classList.remove('show');cb();},750);}else{el.textContent=n;el.className='cdn num';el.style.animation='none';el.offsetHeight;el.style.animation='';setTimeout(tick,900);}}
   setTimeout(tick,900);
 }
 
-// ============ RENDER ============
-function renderGrid(p){
-  const board=p===1?S.b1:S.b2, notes=p===1?S.n1:S.n2;
-  const gid=p===1?'p1Grid':'p2Grid';
-  const sr=p===1?S.r1:S.r2, sc=p===1?S.c1:S.c2;
-  const grid=$(gid);if(!grid)return;grid.innerHTML='';
-  for(let r=0;r<9;r++){
-    for(let c=0;c<9;c++){
-      const cel=document.createElement('div');
-      cel.className='cell';cel.dataset.r=r;cel.dataset.c=c;cel.dataset.row=r;
-      const v=board[r][c];
-      if(S.puz[r][c]!==0){cel.classList.add('fixed');cel.textContent=v;}
-      else if(v!==0){
-        cel.textContent=v;
-        if(v!==S.sol[r][c])cel.classList.add('err');
-        else if(p===2&&S.mode==='pvp')cel.classList.add('p2fill');
-        else if(p===2&&S.mode==='ai')cel.classList.add('aifill');
-      } else {
-        const ns=notes[r][c];
-        if(ns.size>0)cel.innerHTML=noteHTML(ns);
-      }
-      // highlight
-      if(r===sr&&c===sc) cel.classList.add(p===1?'sel1':'sel2');
-      else if(sr>=0&&(r===sr||c===sc||sb(r,c,sr,sc))) cel.classList.add(p===1?'hl1':'hl2');
-      // click handler
-      if(p===1||(p===2&&S.mode==='pvp')){const pp=p;cel.addEventListener('click',()=>selCell(pp,r,c));}
-      grid.appendChild(cel);
-    }
-  }
-}
+// ══════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════
+function noteHTML(ns){let h='<div style="display:grid;grid-template-columns:repeat(3,1fr);width:100%;height:100%;font-size:clamp(4px,.9vw,7px);color:#5555aa;line-height:1;padding:1px;">';for(let n=1;n<=9;n++)h+=`<span style="text-align:center">${ns.has(n)?n:''}</span>`;return h+'</div>';}
 function sb(r1,c1,r2,c2){return Math.floor(r1/3)===Math.floor(r2/3)&&Math.floor(c1/3)===Math.floor(c2/3);}
-function noteHTML(ns){
-  let h='<div style="display:grid;grid-template-columns:repeat(3,1fr);width:100%;height:100%;font-size:clamp(4px,0.9vw,7px);color:#5555aa;line-height:1;padding:1px;">';
-  for(let n=1;n<=9;n++)h+=`<span style="text-align:center">${ns.has(n)?n:''}</span>`;
-  return h+'</div>';
-}
-function buildPad(p){
-  const pad=$(p===1?'p1Pad':'p2Pad');if(!pad)return;pad.innerHTML='';
-  for(let n=1;n<=9;n++){
-    const b=document.createElement('button');b.className='nbtn'+(p===2?' p2s':'');b.textContent=n;
-    const pp=p;b.addEventListener('click',()=>inputNum(pp,n));pad.appendChild(b);
+
+function renderGrid(p){
+  const board=p===1?S.b1:S.b2,notes=p===1?S.n1:S.n2;
+  const gid=p===1?'p1Grid':'p2Grid';
+  const sr=p===1?S.r1:S.r2,sc=p===1?S.c1:S.c2;
+  const grid=$(gid);if(!grid||!S.puz)return;grid.innerHTML='';
+  for(let r=0;r<9;r++)for(let c=0;c<9;c++){
+    const cel=document.createElement('div');cel.className='cell';cel.dataset.r=r;cel.dataset.c=c;cel.dataset.row=r;
+    const v=board[r][c];
+    if(S.puz[r][c]!==0){cel.classList.add('fixed');cel.textContent=v;}
+    else if(v!==0){cel.textContent=v;if(S.sol&&v!==S.sol[r][c])cel.classList.add('err');else if(p===2&&S.mode==='pvp')cel.classList.add('p2fill');else if(p===2&&S.mode==='ai')cel.classList.add('aifill');}
+    else{const ns=notes[r][c];if(ns.size>0)cel.innerHTML=noteHTML(ns);}
+    if(r===sr&&c===sc)cel.classList.add(p===1?'sel1':'sel2');
+    else if(sr>=0&&(r===sr||c===sc||sb(r,c,sr,sc)))cel.classList.add(p===1?'hl1':'hl2');
+    const pp=p;cel.addEventListener('click',()=>selectCell(pp,r,c));
+    grid.appendChild(cel);
   }
 }
 
-// ============ INTERACTION ============
-function selCell(p,r,c){if(p===1){S.r1=r;S.c1=c;}else{S.r2=r;S.c2=c;}renderGrid(p);}
+function buildPad(p){
+  const pad=$(p===1?'p1Pad':'p2Pad');if(!pad)return;pad.innerHTML='';
+  for(let n=1;n<=9;n++){const b=document.createElement('button');b.className='nb'+(p===2?' p2s':'');b.textContent=n;const pp=p;b.addEventListener('click',()=>inputNum(pp,n));pad.appendChild(b);}
+}
+
+// ══════════════════════════════════════════
+// INTERACTION
+// ══════════════════════════════════════════
+function selectCell(p,r,c){if(p===1){S.r1=r;S.c1=c;}else{S.r2=r;S.c2=c;}renderGrid(p);}
 
 function inputNum(p,n){
   if(!S.on)return;
-  const board=p===1?S.b1:S.b2, notes=p===1?S.n1:S.n2;
-  const sr=p===1?S.r1:S.r2, sc=p===1?S.c1:S.c2;
+  if(S.online&&p===1){onlineInput(n);return;}
+  const board=p===1?S.b1:S.b2,notes=p===1?S.n1:S.n2;
+  const sr=p===1?S.r1:S.r2,sc=p===1?S.c1:S.c2;
   if(sr<0||S.puz[sr][sc]!==0)return;
   const nm=p===1?S.nm1:S.nm2;
   if(nm){if(board[sr][sc]!==0)return;const ns=notes[sr][sc];if(ns.has(n))ns.delete(n);else ns.add(n);renderGrid(p);return;}
-  // toggle erase
   if(board[sr][sc]===n){board[sr][sc]=0;if(p===1)S.f1=Math.max(0,S.f1-1);else S.f2=Math.max(0,S.f2-1);updateUI();renderGrid(p);return;}
   notes[sr][sc].clear();
   const correct=n===S.sol[sr][sc];
-  if(!correct){
-    if(p===1){S.e1++;S.s1=Math.max(0,S.s1-20);showNotif('P1 오답! -20점','error');}
-    else{S.e2++;S.s2=Math.max(0,S.s2-20);showNotif('P2 오답! -20점','p2n');}
-  } else {
-    const pts=Math.max(10,50-Math.floor(S.tsec/30)*5);
-    if(p===1){S.f1++;S.s1+=pts;}else{S.f2++;S.s2+=pts;}
-    flash(p,sr,sc);
-  }
+  if(!correct){if(p===1){S.e1++;S.s1=Math.max(0,S.s1-20);showNotif('오답! -20점','err');}else{S.e2++;S.s2=Math.max(0,S.s2-20);showNotif('P2 오답!','p2n');}}
+  else{const pts=Math.max(10,50-Math.floor(S.tsec/30)*5);if(p===1){S.f1++;S.s1+=pts;}else{S.f2++;S.s2+=pts;}flashCell(p,sr,sc);}
   board[sr][sc]=n;updateUI();renderGrid(p);
   if((p===1?S.f1:S.f2)===S.tot)endGame(p===1?'p1':'p2');
 }
 
-function flash(p,r,c){
-  setTimeout(()=>{
-    const el=document.querySelector(`#${p===1?'p1Grid':'p2Grid'} .cell[data-r="${r}"][data-c="${c}"]`);
-    if(el){el.classList.add('cf');setTimeout(()=>el.classList.remove('cf'),350);}
-  },10);
+function onlineInput(n){
+  if(!S.socket)return;
+  const r=S.r1,c=S.c1;if(r<0||S.puz[r][c]!==0)return;
+  if(S.nm1){const ns=S.n1[r][c];if(ns.has(n))ns.delete(n);else ns.add(n);renderGrid(1);return;}
+  if(S.b1[r][c]===n){S.b1[r][c]=0;S.n1[r][c].clear();renderGrid(1);S.socket.emit('cell_erase',{row:r,col:c,wasCorrect:false});return;}
+  S.n1[r][c].clear();S.b1[r][c]=n;renderGrid(1);flashCell(1,r,c);
+  S.socket.emit('cell_input',{row:r,col:c,value:n});
+}
+
+function flashCell(p,r,c){
+  setTimeout(()=>{const el=document.querySelector(`#${p===1?'p1Grid':'p2Grid'} .cell[data-r="${r}"][data-c="${c}"]`);if(el){el.classList.add('cf');setTimeout(()=>el.classList.remove('cf'),350);}},10);
 }
 
 function eraseCell(p){
   if(!S.on)return;
-  const board=p===1?S.b1:S.b2, notes=p===1?S.n1:S.n2;
-  const r=p===1?S.r1:S.r2, c=p===1?S.c1:S.c2;
+  if(S.online&&p===1){
+    const r=S.r1,c=S.c1;if(r<0||S.puz[r][c]!==0)return;
+    S.b1[r][c]=0;S.n1[r][c].clear();renderGrid(1);
+    S.socket?.emit('cell_erase',{row:r,col:c,wasCorrect:false});return;
+  }
+  const board=p===1?S.b1:S.b2,notes=p===1?S.n1:S.n2;
+  const r=p===1?S.r1:S.r2,c=p===1?S.c1:S.c2;
   if(r<0||S.puz[r][c]!==0)return;
   if(board[r][c]!==0&&board[r][c]===S.sol[r][c]){if(p===1)S.f1=Math.max(0,S.f1-1);else S.f2=Math.max(0,S.f2-1);}
   board[r][c]=0;notes[r][c].clear();updateUI();renderGrid(p);
 }
 
-function toggleNotes(p){
-  if(p===1){S.nm1=!S.nm1;const b=$('nb1');if(b)b.textContent='✏ 메모 '+(S.nm1?'ON':'OFF');}
-  else{S.nm2=!S.nm2;const b=$('nb2');if(b)b.textContent='✏ 메모 '+(S.nm2?'ON':'OFF');}
+function toggleNote(p){
+  if(p===1){S.nm1=!S.nm1;const b=$('nb1');if(b){b.textContent='✏ 메모 '+(S.nm1?'ON':'OFF');b.className='tb'+(S.nm1?' on':'');}}
+  else{S.nm2=!S.nm2;const b=$('nb2');if(b){b.textContent='✏ 메모 '+(S.nm2?'ON':'OFF');b.className='tb'+(S.nm2?' on':'');}}
 }
 
 function useHint(p){
   if(!S.on)return;
-  const hs=p===1?S.h1:S.h2;if(hs<=0){showNotif('힌트 없음!','error');return;}
-  const board=p===1?S.b1:S.b2, notes=p===1?S.n1:S.n2;
-  const sr=p===1?S.r1:S.r2, sc=p===1?S.c1:S.c2;
+  const hs=p===1?S.h1:S.h2;if(hs<=0){showNotif('힌트 없음!','err');return;}
+  const board=p===1?S.b1:S.b2,notes=p===1?S.n1:S.n2;
+  const sr=p===1?S.r1:S.r2,sc=p===1?S.c1:S.c2;
   let t=null;
   if(sr>=0&&S.puz[sr][sc]===0&&board[sr][sc]===0)t=[sr,sc];
   else{const em=[];for(let r=0;r<9;r++)for(let c=0;c<9;c++)if(S.puz[r][c]===0&&board[r][c]===0)em.push([r,c]);if(em.length)t=em[0|Math.random()*em.length];}
-  if(!t){showNotif('힌트 없음','info');return;}
+  if(!t)return;
   const[r,c]=t;board[r][c]=S.sol[r][c];notes[r][c].clear();
   if(p===1){S.f1++;S.h1--;S.hu1++;S.s1=Math.max(0,S.s1-50);}
   else{S.f2++;S.h2--;S.hu2++;S.s2=Math.max(0,S.s2-50);}
   const hc=$(p===1?'hc1':'hc2');if(hc)hc.textContent=p===1?S.h1:S.h2;
-  const hb=$(p===1?'p1HBadge':'p2HBadge');if(hb)hb.textContent='HINT ×'+(p===1?S.h1:S.h2);
-  showNotif(`P${p} 힌트 사용 (-50점)`,p===1?'info':'p2n');
-  renderGrid(p);updateUI();
+  const hb=$(p===1?'p1HBadge':'p2HBadge');if(hb)hb.textContent='HINT×'+(p===1?S.h1:S.h2);
+  showNotif('힌트 사용 (-50점)','inf');renderGrid(p);updateUI();
   if((p===1?S.f1:S.f2)===S.tot)endGame(p===1?'p1':'p2');
 }
 
-// ============ KEYBOARD ============
+// ══════════════════════════════════════════
+// KEYBOARD
+// ══════════════════════════════════════════
 document.addEventListener('keydown',e=>{
   if(!S.on)return;
-  if(['INPUT','BUTTON','TEXTAREA'].includes(e.target.tagName))return;
-  if(S.mode==='pvp'){
-    // P1: number row 1-9, arrows
+  if(['INPUT','TEXTAREA'].includes(e.target.tagName))return;
+  if(S.mode==='pvp'&&!S.online){
     if(e.key>='1'&&e.key<='9'&&!e.code.startsWith('Numpad')){inputNum(1,+e.key);return;}
     if((e.key==='Backspace'||e.key==='Delete')&&!e.code.startsWith('Numpad')){eraseCell(1);return;}
     const mv={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]};
     if(mv[e.key]){e.preventDefault();let nr=S.r1+mv[e.key][0],nc=S.c1+mv[e.key][1];if(nr>=0&&nr<9&&nc>=0&&nc<9){S.r1=nr;S.c1=nc;renderGrid(1);}return;}
-    // P2: numpad keys, WASD move
     const npm={'Numpad1':1,'Numpad2':2,'Numpad3':3,'Numpad4':4,'Numpad5':5,'Numpad6':6,'Numpad7':7,'Numpad8':8,'Numpad9':9};
     if(npm[e.code]){inputNum(2,npm[e.code]);return;}
-    if(e.code==='Numpad0'||e.code==='NumpadDecimal'){eraseCell(2);return;}
     const mv2={KeyW:[-1,0],KeyS:[1,0],KeyA:[0,-1],KeyD:[0,1]};
     if(mv2[e.code]){e.preventDefault();let nr=S.r2+mv2[e.code][0],nc=S.c2+mv2[e.code][1];if(nr>=0&&nr<9&&nc>=0&&nc<9){S.r2=nr;S.c2=nc;renderGrid(2);}return;}
     return;
   }
-  // solo / ai / coop
   if(e.key>='1'&&e.key<='9'){inputNum(1,+e.key);return;}
-  if(e.key==='Backspace'||e.key==='Delete'||e.key==='0'){eraseCell(1);return;}
+  if(e.key==='Backspace'||e.key==='Delete'){eraseCell(1);return;}
   const mv={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]};
   if(mv[e.key]){e.preventDefault();let nr=S.r1+mv[e.key][0],nc=S.c1+mv[e.key][1];if(nr>=0&&nr<9&&nc>=0&&nc<9){S.r1=nr;S.c1=nc;renderGrid(1);}}
 });
 
-// ============ TIMER ============
-function startTimer(){
-  clearInterval(S.tInt);
-  S.tInt=setInterval(()=>{if(!S.on)return;S.tsec++;const m=String(0|S.tsec/60).padStart(2,'0'),s=String(S.tsec%60).padStart(2,'0');$('timerDisp').textContent=`${m}:${s}`;},1000);
-}
+// ══════════════════════════════════════════
+// TIMER / AI
+// ══════════════════════════════════════════
+function startTimer(){clearInterval(S.tInt);S.tInt=setInterval(()=>{if(!S.on)return;S.tsec++;const m=String(0|S.tsec/60).padStart(2,'0'),s=String(S.tsec%60).padStart(2,'0');$('tDisp').textContent=`${m}:${s}`;},1000);}
 
-// ============ AI ============
 function startAI(){
-  if(S.mode!=='ai')return;
-  clearInterval(S.aiInt);
+  if(S.mode!=='ai')return;clearInterval(S.aiInt);
   const cells=shuf([...Array(81).keys()].filter(i=>S.puz[0|i/9][i%9]===0).map(i=>[0|i/9,i%9]));
   let idx=0;
   S.aiInt=setInterval(()=>{
     if(!S.on||idx>=cells.length){clearInterval(S.aiInt);return;}
-    const[r,c]=cells[idx++];
-    S.b2[r][c]=S.sol[r][c];S.f2++;S.s2+=40;
+    const[r,c]=cells[idx++];S.b2[r][c]=S.sol[r][c];S.f2++;S.s2+=40;
     const el=document.querySelector(`#p2Grid .cell[data-r="${r}"][data-c="${c}"]`);
     if(el){el.classList.add('aifill');el.textContent=S.b2[r][c];}
     updateUI();if(S.f2===S.tot)endGame('p2');
   },S.aiDly);
 }
 
-// ============ UI ============
+// ══════════════════════════════════════════
+// UI UPDATE
+// ══════════════════════════════════════════
 function updateUI(){
-  $('p1Score').textContent=S.s1;$('p1Prog').textContent=`${S.f1} / ${S.tot}`;$('p1PF').style.width=`${(S.f1/S.tot)*100}%`;
-  if(S.mode==='ai'||S.mode==='pvp'){
-    $('p2Score').textContent=S.s2;$('p2Prog').textContent=`${S.f2} / ${S.tot}`;$('p2PF').style.width=`${(S.f2/S.tot)*100}%`;
-  }
+  $('p1Score').textContent=S.s1;$('p1Prog').textContent=`${S.f1}/${S.tot}`;$('p1PF').style.width=`${(S.f1/S.tot)*100}%`;
+  if(S.mode==='ai'||S.mode==='pvp'){$('p2Score').textContent=S.s2;$('p2Prog').textContent=`${S.f2}/${S.tot}`;$('p2PF').style.width=`${(S.f2/S.tot)*100}%`;}
 }
 
-// ============ END ============
+// ══════════════════════════════════════════
+// END GAME / RESULT
+// ══════════════════════════════════════════
 function endGame(winner){
   S.on=false;clearInterval(S.tInt);clearInterval(S.aiInt);
   const m=String(0|S.tsec/60).padStart(2,'0'),s=String(S.tsec%60).padStart(2,'0');
-  const t=$('rTitle'),sb=$('rSub'),st=$('rStats');
-  if(S.mode==='pvp'){
-    if(winner==='p1'){t.textContent='P1 WIN!';t.className='rtitle rp1';sb.textContent='P1이 먼저 완성! 🎉';}
-    else{t.textContent='P2 WIN!';t.className='rtitle rp2';sb.textContent='P2가 먼저 완성! 🎉';}
-    st.innerHTML=`
-      <div><div class="stat-lbl">Time</div><div class="stat-val">${m}:${s}</div></div>
-      <div><div class="stat-lbl">P1 Score</div><div class="stat-val" style="color:var(--p1)">${S.s1}</div></div>
-      <div><div class="stat-lbl">P1 Errors</div><div class="stat-val">${S.e1}</div></div>
-      <div><div class="stat-lbl">P2 Score</div><div class="stat-val" style="color:var(--p2)">${S.s2}</div></div>
-      <div><div class="stat-lbl">P2 Errors</div><div class="stat-val">${S.e2}</div></div>
-      <div><div class="stat-lbl">P1 Hints</div><div class="stat-val">${S.hu1}</div></div>`;
-  } else if(S.mode==='ai'){
-    if(winner==='p1'){t.textContent='WIN!';t.className='rtitle rwin';sb.textContent='AI를 이겼습니다! 🎉';}
-    else{t.textContent='LOSE';t.className='rtitle rlose';sb.textContent='AI가 먼저 풀었습니다. 다시 도전!';}
-    st.innerHTML=`<div><div class="stat-lbl">Time</div><div class="stat-val">${m}:${s}</div></div><div><div class="stat-lbl">Score</div><div class="stat-val">${S.s1}</div></div><div><div class="stat-lbl">Errors</div><div class="stat-val">${S.e1}</div></div><div><div class="stat-lbl">Hints</div><div class="stat-val">${S.hu1}</div></div>`;
+  showResult(winner,m+':'+s,{score:S.s1,errors:S.e1,hints:S.hu1},{score:S.s2,errors:S.e2},null);
+}
+
+function showResult(outcome,timeStr,myP,oppP,winnerName){
+  const t=$('rTitle'),sub=$('rSub'),st=$('rStats');
+  if(outcome==='p1win'||outcome==='p1'){
+    t.textContent=S.online?'WIN!':'P1 WIN!';t.style.color=S.online?'var(--accent3)':'var(--p1)';
+    sub.textContent=S.online?`${winnerName||'YOU'} 승리! 🎉`:'P1이 먼저 완성! 🎉';
+  } else if(outcome==='p2'){
+    t.textContent=S.online?'LOSE':'P2 WIN!';t.style.color=S.online?'var(--accent2)':'var(--p2)';
+    sub.textContent=S.online?`${winnerName||'상대방'} 승리!`:'P2가 먼저 완성! 🎉';
+  } else if(outcome==='p2win'){
+    t.textContent='LOSE';t.style.color='var(--accent2)';sub.textContent=`${winnerName||'상대방'} 승리!`;
   } else {
-    t.textContent='CLEAR!';t.className='rtitle rwin';sb.textContent='완료! 수고하셨습니다 🎉';
-    st.innerHTML=`<div><div class="stat-lbl">Time</div><div class="stat-val">${m}:${s}</div></div><div><div class="stat-lbl">Score</div><div class="stat-val">${S.s1}</div></div><div><div class="stat-lbl">Errors</div><div class="stat-val">${S.e1}</div></div><div><div class="stat-lbl">Hints</div><div class="stat-val">${S.hu1}</div></div>`;
+    t.textContent='CLEAR!';t.style.color='var(--accent3)';sub.textContent='완료! 🎉';
   }
+  st.innerHTML=`
+    <div><div class="sl">Time</div><div class="sv">${timeStr}</div></div>
+    <div><div class="sl">${S.online?'내 점수':'P1 Score'}</div><div class="sv" style="color:var(--p1)">${myP?.score??0}</div></div>
+    <div><div class="sl">${S.online?'내 오답':'P1 오답'}</div><div class="sv">${myP?.errors??0}</div></div>
+    ${oppP?`<div><div class="sl">${S.online?'상대 점수':'P2 Score'}</div><div class="sv" style="color:var(--p2)">${oppP.score??0}</div></div>`:''}
+  `;
   $('resultOv').classList.add('show');
 }
 
-function quitGame(){S.on=false;clearInterval(S.tInt);clearInterval(S.aiInt);goHome();}
-function restartGame(){$('resultOv').classList.remove('show');startGame();}
-function goHome(){S.on=false;clearInterval(S.tInt);clearInterval(S.aiInt);$('resultOv').classList.remove('show');showScreen('startScreen');}
+function quitGame(){S.on=false;clearInterval(S.tInt);clearInterval(S.aiInt);showScreen('startScreen');}
+function restartGame(){$('resultOv').classList.remove('show');if(S.online)leaveGame();else startOffline();}
+function goHome(){S.on=false;clearInterval(S.tInt);clearInterval(S.aiInt);if(S.socket)S.socket.disconnect();S.online=false;$('resultOv').classList.remove('show');showScreen('startScreen');}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');}
 
 let ntT=null;
-function showNotif(msg,type='info'){const el=$('notif');el.textContent=msg;el.className=`notif ${type} show`;clearTimeout(ntT);ntT=setTimeout(()=>el.classList.remove('show'),2000);}
+function showNotif(msg,type='inf'){const el=$('notif');el.textContent=msg;el.className=`notif ${type} show`;clearTimeout(ntT);ntT=setTimeout(()=>el.classList.remove('show'),2500);}
+
+// URL에 room 코드 있으면 자동으로 참가 모달 열기
+window.addEventListener('DOMContentLoaded',()=>{
+  const urlCode=new URLSearchParams(location.search).get('room');
+  if(urlCode){$('joinCode').value=urlCode.toUpperCase();openJoin();}
+  const saved=sessionStorage.getItem('sb_r');
+  if(saved){const{code,name,role}=JSON.parse(saved);$('joinName').value=name;$('joinCode').value=code;}
+});
 </script>
 </body>
 </html>
